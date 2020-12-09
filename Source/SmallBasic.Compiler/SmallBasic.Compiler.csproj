@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(RootDirectory)\Source\SmallBasic.Utilities\SmallBasic.Utilities.csproj" />
+    <ProjectReference Include="..\SmallBasic.Utilities\SmallBasic.Utilities.csproj" />
   </ItemGroup>
 
 </Project>
