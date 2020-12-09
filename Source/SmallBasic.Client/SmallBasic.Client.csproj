@@ -1,45 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <WebPackOutputPath>$(RootDirectory)\Source\SmallBasic.Editor\wwwroot</WebPackOutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
-    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RazorLangVersion>3.0</RazorLangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="**\*.*" />
-    <None Remove="node_modules\**\*.*" />
-    <WebpackInput Include="**\*.*" />
-    <WebpackInput Remove="node_modules\**\*.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" Version="3.2.0" />
   </ItemGroup>
-
-  <Target Name="WebPackRestore" Inputs="package.json" Outputs="obj\package.json">
-    <Message Importance="high" Text="Restoring npm packages for project $(MSBuildProjectName)" />
-    <Exec Command="npm ci --silent" WorkingDirectory="$(MSBuildProjectDirectory)" />
-    <Copy SourceFiles="package.json" DestinationFiles="obj\package.json" />
-  </Target>
-
-  <Target Name="WebPackClientSide" AfterTargets="Build" DependsOnTargets="WebPackRestore" Inputs="@(WebpackInput)" Outputs="$(WebPackOutputPath)\**\*.*">
-    <Message Importance="high" Text="Running webpack for project $(MSBuildProjectName)" />
-
-    <ItemGroup>
-      <ClientWebPackArgs Include="config" Value="webpack.config.ts" />
-      <ClientWebPackArgs Include="env.watch" Value="$(Watch)" />
-      <ClientWebPackArgs Include="env.configuration" Value="$(Configuration)" />
-      <ClientWebPackArgs Include="env.outputPath" Value="$(WebPackOutputPath)" />
-      <ClientWebPackArgs Include="env.isBuildingForDesktop" Value="$(IsBuildingForDesktop)" />
-      <ClientWebPackArgs Include="info-verbosity" Condition="'$(Watch)' == 'True'" Value="verbose" />
-      <ClientWebPackArgs Include="w" Condition="'$(Watch)' == 'True'" />
-      <ClientWebPackArgs Include="display-error-details" />
-    </ItemGroup>
-
-    <Exec
-      Command="node --max-old-space-size=7168 $(MSBuildProjectDirectory)/node_modules/webpack/bin/webpack.js @(ClientWebPackArgs->'--%(Identity) %(Value)', ' ')"
-      WorkingDirectory="$(MSBuildProjectDirectory)" />
-  </Target>
 
 </Project>
